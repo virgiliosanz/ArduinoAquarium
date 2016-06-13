@@ -1,0 +1,11 @@
+Version 1 of my Aqurium Controller
+======================================
+
+It controlls the photoperiod and a auto fill water.
+The lights can be turn on and off by a button
+
+The filter can also be switched by another button
+
+The auto fill water is controlled by a buoy and can also be stoped by a button.
+
+All actions are monitored using leds.

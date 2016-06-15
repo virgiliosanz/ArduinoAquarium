@@ -11,42 +11,42 @@ add_definitions(-DPLATFORMIO=020901)
 add_definitions(-D__AVR_ATmega328P__)
 
 add_custom_target(
-    PLATFORMIO_BUILD ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PLATFORMIO_BUILD ALL
+        COMMAND ${PLATFORMIO_CMD} -f -c clion run
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(
-    PLATFORMIO_UPLOAD ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run --target upload
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PLATFORMIO_UPLOAD ALL
+        COMMAND ${PLATFORMIO_CMD} -f -c clion run --target upload
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(
-    PLATFORMIO_CLEAN ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run --target clean
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PLATFORMIO_CLEAN ALL
+        COMMAND ${PLATFORMIO_CMD} -f -c clion run --target clean
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(
-    PLATFORMIO_PROGRAM ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run --target program
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PLATFORMIO_PROGRAM ALL
+        COMMAND ${PLATFORMIO_CMD} -f -c clion run --target program
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(
-    PLATFORMIO_UPLOADFS ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run --target uploadfs
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PLATFORMIO_UPLOADFS ALL
+        COMMAND ${PLATFORMIO_CMD} -f -c clion run --target uploadfs
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(
-    PLATFORMIO_UPDATE_ALL ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion update
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PLATFORMIO_UPDATE_ALL ALL
+        COMMAND ${PLATFORMIO_CMD} -f -c clion update
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_executable(ardutests
-    src/aquarium.cpp
-    src/main.cpp
-)
+        src/aquarium.cpp
+        src/main.cpp
+        )

@@ -56,7 +56,7 @@ namespace board {
             button.begin(Pines.button_green).onPress(activated, activated.EVT_TOGGLE);
             //.trace(Serial);
 
-            buoy.begin(Pines.buoy, 100, true, true);
+            buoy.begin(Pines.buoy, 100, false, true);
             //.trace(Serial);
 
             pump.begin(Pines.relay_pump);
@@ -124,15 +124,25 @@ namespace board {
             int H = hour();
             int M = minute();
 
-            return (((H >= Photo_period[0].hour && M >= Photo_period[0].minute) &&
-                     (H <= Photo_period[1].hour && M <= Photo_period[1].minute)) ||
-                    ((H >= Photo_period[2].hour && M >= Photo_period[2].minute) &&
-                     (H <= Photo_period[3].hour && M <= Photo_period[3].minute)));
+            bool is_in = !((H >= Photo_period[0].hour && M >= Photo_period[0].minute &&
+                     H <= Photo_period[1].hour && M <= Photo_period[1].minute) ||
+                    (H >= Photo_period[2].hour && M >= Photo_period[2].minute &&
+                     H <= Photo_period[3].hour && M <= Photo_period[3].minute));
+
+           // board::p(F("Is In: %d\n"), is_in);
+
+            return is_in;
         }
 
         void setup() {
             board::p(F("Lights - relay: %02d, button: %02d\n"), Pines.relay_lights,
                      Pines.button_blue);
+           board::p(F("Photoperiod 1 %02d:%02d -> %02d:%02d\n"),
+              Photo_period[0].hour,Photo_period[0].minute,
+              Photo_period[1].hour,Photo_period[1].minute);
+            board::p(F("Photoperiod 2 %02d:%02d -> %02d:%02d\n"),
+              Photo_period[2].hour,Photo_period[2].minute,
+              Photo_period[3].hour,Photo_period[3].minute);
 
             relay.begin(Pines.relay_lights);
             //.trace(Serial);
@@ -145,7 +155,10 @@ namespace board {
                                   Photo_period[i].func);
             }
 
-            in_photo_period() ? lights::on() : lights::off();
+            if (in_photo_period())
+              lights::on();
+            else
+              lights::off();
         }
     }
 }

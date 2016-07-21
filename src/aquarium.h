@@ -22,10 +22,10 @@ namespace board {
         uint8_t led_red;       // digital_5 - Filter is off
         uint8_t led_yellow;    // digital_6 - Autofill is off
         uint8_t led_blue;      // digital_7 - Filling
-        uint8_t relay_fan;     // digital_8
-        uint8_t relay_lights;  // digital_9
-        uint8_t relay_pump;    // digital_10
-        uint8_t relay_filter;  // digital_11
+        uint8_t relay_lights;     // digital_8
+        uint8_t relay_filter;  // digital_9
+        uint8_t relay_unuser;    // digital_10
+        uint8_t relay_pump;  // digital_11
         uint8_t buoy;          // digital_12
         uint8_t led_yellow2;   // digital_13
 
@@ -35,6 +35,7 @@ namespace board {
         uint8_t stepper3; // analog_3
         uint8_t stepper4; // analog_4
         uint8_t analog_5; // analog_5
+
     } Pines = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                10, 11, 12, 13, A0, A1, A2, A3, A4, A5};
 
@@ -45,12 +46,11 @@ namespace board {
     namespace auto_fill {
         void setup();
     }
+
     namespace filter {
         void setup();
     }
-    namespace heater {
-        void setup();
-    }
+
     namespace lights {
         void setup();
 
@@ -62,12 +62,12 @@ namespace board {
             int hour;
             int minute;
             OnTick_t func;
-        } Photo_period[4] = {{8,  0, lights::on},
-                             {12, 0, lights::off},
-                             {14, 0, lights::on},
+        } Photo_period[] = {{8,  0, lights::on},
+                             {11, 0, lights::off},
+                             {14, 30, lights::on},
                              {21, 0, lights::off}};
     }
-
+/*
     namespace fans {
         void setup();
 
@@ -75,7 +75,7 @@ namespace board {
 
         const int too_hot = 30; // Temperature in celsius that trigger the fans
     }
-
+*/
     namespace feeder {
         void setup();
 
@@ -85,9 +85,9 @@ namespace board {
             int hour;
             int minute;
             OnTick_t func;
-        } Feed_times[3] = {{8,  2,  feeder::feed},
-                           {14, 2,  feeder::feed},
-                           {20, 30, feeder::feed}
+        } Feed_times[] = {{ 8, 5,  feeder::feed},
+                          {16, 58,  feeder::feed},
+                          {20, 30, feeder::feed}
         };
 
         const timeDayOfWeek_t abstinence_day = dowSaturday;

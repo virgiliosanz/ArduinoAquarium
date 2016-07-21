@@ -5,11 +5,11 @@ namespace board {
 // http://playground.arduino.cc/Main/Printf
     void static p(const __FlashStringHelper *fmt, ...) {
         char buf[129]
-        PROGMEM;
+                PROGMEM;
         va_list args;
         va_start(args, fmt);
 #ifdef __AVR__
-        vsnprintf_P(buf, 128, (const char *)fmt, args);
+        vsnprintf_P(buf, 128, (const char *) fmt, args);
 #else
         vsnprintf(buf, 128, (const char *) fmt, args);
 #endif
@@ -28,14 +28,14 @@ namespace board {
         auto_fill::setup();
         filter::setup();
         lights::setup();
-        fans::setup();
+//      fans::setup();
         feeder::setup();
     }
 
     void loop() {
         automaton.run();
         Alarm.delay(0);
-        fans::loop();
+//        fans::loop();
     }
 
     namespace auto_fill {
@@ -67,7 +67,7 @@ namespace board {
         }
     }
 
-    namespace filter {
+    namespace filter { // and heater
         static Atm_button button;
         static Atm_led relay;
         static Atm_led led;
@@ -90,12 +90,12 @@ namespace board {
         static Atm_led relay;
 
         void on() {
-            board::p(F("Ligths ON\n"));
+//            board::p(F("Ligths ON\n"));
             relay.trigger(relay.EVT_ON); // Relays acts upside down
         }
 
         void off() {
-            board::p(F("Lights OFF\n"));
+//            board::p(F("Lights OFF\n"));
             relay.trigger(relay.EVT_OFF);
         }
 
@@ -108,7 +108,7 @@ namespace board {
                            (H >= Photo_period[2].hour && M >= Photo_period[2].minute &&
                             H <= Photo_period[3].hour && M <= Photo_period[3].minute));
 
-            // board::p(F("Is In: %d\n"), is_in);
+//            board::p(F("Is In (%02d:%02d): %d\n"), H, M, is_in);
 
             return is_in;
         }
@@ -133,7 +133,7 @@ namespace board {
                 lights::off();
         }
     }
-
+/*
     namespace fans {
         OneWire oneWire(Pines.thermometer);
         DallasTemperature sensors(&oneWire);
@@ -173,13 +173,13 @@ namespace board {
             }
         }
     }
+*/
     namespace feeder {
         static Atm_bit activated;
         static Atm_button button;
 
         const int steps_per_revolution = 32;
-
-// initialize the stepper library on pins 8 through 11:
+        const int revolutions = 1;
         Stepper stepper(steps_per_revolution, Pines.stepper1, Pines.stepper2, Pines.stepper3, Pines.stepper4);
 
         void change_status() {
@@ -187,23 +187,26 @@ namespace board {
         }
 
         void feed() {
-            if ((day() != abstinence_day) && (activated.ON)) {
+//            if ((day() != abstinence_day) && (activated.ON)) {
+            if (day() != abstinence_day) {
                 board::p(F("Feeding the fishes"));
-                stepper.step(-steps_per_revolution * 64); // One revolution is enough
+                stepper.step(-steps_per_revolution * 64 * revolutions);
             }
         }
 
         void setup() {
-            stepper.setSpeed(300);
+            stepper.setSpeed(150);
 
             int N = sizeof(Feed_times) / sizeof(struct feed_times_t);
             for (int i = 0; i < N; i++) {
                 Alarm.alarmRepeat(Feed_times[i].hour, Feed_times[i].minute, 0,
                                   Feed_times[i].func);
+                board::p(F("Feeding times %02d:%02d\n"),
+                         Feed_times[i].hour, Feed_times[i].minute);
             }
 
-            activated.begin(true).led(Pines.led_yellow2, true);
-            button.begin(Pines.button_yellow).onPress(activated, activated.EVT_TOGGLE);
+//            activated.begin(true).led(Pines.led_yellow2, true);
+//            button.begin(Pines.button_yellow).onPress(activated, activated.EVT_TOGGLE);
         }
     }
 }

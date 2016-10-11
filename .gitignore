@@ -1,6 +1,6 @@
 .pioenvs
-CMakeListsPrivate.txt
 .clang_complete
 .gcc-flags.json
-CMakeLists.txt
-.idea
+CMakeListsPrivate.txt
+.piolibdeps
+.ycm_extra_conf.pyc

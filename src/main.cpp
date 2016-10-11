@@ -1,10 +1,14 @@
 #include "aquarium.h"
 
-void setup() {
+void setup()
+{
     Serial.begin(9600);
     while (!Serial);
 
     board::setup();
 }
 
-void loop() { board::loop(); }
+void loop()
+{
+    board::loop();
+}
